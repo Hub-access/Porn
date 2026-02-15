@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>你被骗了</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: black;
+            color: white;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 56px;
+            letter-spacing: -2px;
+            margin-bottom: 14px;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            line-height: 1.7;
+            max-width: 620px;
+        }
+
+        .btn {
+            margin-top: 22px;
+            border: none;
+            cursor: pointer;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-weight: 900;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            background: #ff9000;
+            color: black;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .small {
+            margin-top: 14px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.55);
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1>你被骗了 😂</h1>
+        <p>
+            哈哈哈哈哈哈哈哈 臭小丑<br />
+            你活着干啥啊 傻孩子。
+        </p>
+
+        <button class="btn" onclick="playMusic()">
+            Play Music
+        </button>
+
+        <div class="small">
+            （Click here to see the porn）
+        </div>
+    </div>
+
+    <audio id="bgm" src="music.mp3"></audio>
+
+    <script>
+        // 尝试自动播放（很多浏览器会阻止）
+        window.addEventListener("load", () => {
+            const audio = document.getElementById("bgm");
+            audio.volume = 0.8;
+            audio.play().catch(() => {
+                // 自动播放失败没关系，用户点按钮就能播放
+            });
+        });
+
+        function playMusic() {
+            const audio = document.getElementById("bgm");
+            audio.volume = 0.8;
+            audio.play();
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Age Verification</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0b0b0b;
+            color: white;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 30px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 560px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            font-size: 18px;
+        }
+
+        .brand .box {
+            background: #ff9000;
+            color: black;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 900;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.7;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .btns {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-weight: 900;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            transition: 0.2s;
+            font-size: 13px;
+        }
+
+        .adult {
+            background: #ff9000;
+            color: black;
+            flex: 1;
+        }
+
+        .adult:hover {
+            transform: translateY(-2px);
+        }
+
+        .leave {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: rgba(255, 255, 255, 0.85);
+            flex: 1;
+        }
+
+        .leave:hover {
+            background: rgba(255, 255, 255, 0.09);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="brand">
+            <span class="box">PH</span>
+            <span>STUDIO</span>
+        </div>
+
+        <h1>Age Verification</h1>
+
+        <p>
+            You must be 18+ to enter this website.
+            By clicking “I am an adult”, you confirm you are of legal age.
+        </p>
+
+        <div class="btns">
+            <button class="adult" onclick="goNext()">I am an adult</button>
+            <button class="leave" onclick="window.location.href='https://google.com'">
+                Leave
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function goNext() {
+            // 跳转到第二页
+            window.location.href = "gotcha.html";
+        }
+    </script>
+</body>
+
+</html>
