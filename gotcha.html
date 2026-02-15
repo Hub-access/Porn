@@ -15,33 +15,123 @@
 
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background: black;
+            background: #0b0b0b;
             color: white;
             min-height: 100vh;
             display: grid;
             place-items: center;
             padding: 30px;
-            text-align: center;
+            overflow-x: hidden;
+            position: relative;
         }
 
+        /* 噪点层（grain / noise） */
+        .noise {
+            pointer-events: none;
+            position: fixed;
+            inset: 0;
+            opacity: 0.14;
+            mix-blend-mode: overlay;
+            background-image:
+                repeating-linear-gradient(0deg,
+                    rgba(255, 255, 255, 0.03) 0px,
+                    rgba(255, 255, 255, 0.03) 1px,
+                    rgba(0, 0, 0, 0.03) 2px,
+                    rgba(0, 0, 0, 0.03) 3px),
+                repeating-linear-gradient(90deg,
+                    rgba(255, 255, 255, 0.02) 0px,
+                    rgba(255, 255, 255, 0.02) 1px,
+                    rgba(0, 0, 0, 0.02) 2px,
+                    rgba(0, 0, 0, 0.02) 3px);
+            animation: noiseMove 0.25s infinite;
+            z-index: 0;
+        }
+
+        @keyframes noiseMove {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            25% {
+                transform: translate(-2px, 1px);
+            }
+
+            50% {
+                transform: translate(2px, -1px);
+            }
+
+            75% {
+                transform: translate(-1px, -2px);
+            }
+
+            100% {
+                transform: translate(1px, 2px);
+            }
+        }
+
+        /* 卡片 */
+        .card {
+            position: relative;
+            z-index: 2;
+
+            width: 100%;
+            max-width: 560px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+            text-align: center;
+
+            /* 往下 + 放大 1.5 倍 */
+            transform: translateY(40px) scale(1.5);
+        }
+
+        /* 标题（打字机） */
         h1 {
-            font-size: 56px;
-            letter-spacing: -2px;
-            margin-bottom: 14px;
+            font-size: 40px;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+            display: inline-block;
+            text-transform: uppercase;
+            min-height: 48px;
+        }
+
+        /* 打字机光标 */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 34px;
+            margin-left: 6px;
+            background: rgba(255, 144, 0, 0.95);
+            transform: translateY(6px);
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            49% {
+                opacity: 1;
+            }
+
+            50%,
+            100% {
+                opacity: 0;
+            }
         }
 
         p {
             color: rgba(255, 255, 255, 0.7);
-            font-size: 16px;
+            font-size: 15px;
             line-height: 1.7;
-            max-width: 620px;
         }
 
         .btn {
-            margin-top: 22px;
+            margin-top: 18px;
             border: none;
             cursor: pointer;
-            padding: 12px 16px;
+            padding: 14px 18px;
             border-radius: 12px;
             font-weight: 900;
             letter-spacing: 0.6px;
@@ -49,53 +139,223 @@
             background: #ff9000;
             color: black;
             transition: 0.2s;
+            height: 52px;
+            width: 100%;
+            max-width: 320px;
         }
 
         .btn:hover {
             transform: translateY(-2px);
         }
 
+        .btn.playing {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.85);
+            cursor: default;
+        }
+
+        /* 终端输出 */
+        .terminal {
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            background: rgba(0, 0, 0, 0.35);
+            text-align: left;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.78);
+            max-height: 220px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* 最后一行闪烁 */
+        .flash-line {
+            animation: lineFlash 0.18s infinite;
+            color: #ff9000;
+            font-weight: 900;
+        }
+
+        @keyframes lineFlash {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.15;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
         .small {
-            margin-top: 14px;
-            font-size: 13px;
+            margin-top: 12px;
+            font-size: 12px;
             color: rgba(255, 255, 255, 0.55);
+            line-height: 1.5;
+        }
+
+        /* 全屏最终显示 */
+        .final-screen {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            display: none;
+            place-items: center;
+            z-index: 9999;
+            padding: 30px;
+        }
+
+        .final-screen.show {
+            display: grid;
+        }
+
+        .final-text {
+            font-size: 102px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            text-align: center;
+            color: #ff9000;
+            text-transform: uppercase;
+            line-height: 1.05;
+        }
+
+        @media (max-width: 520px) {
+            .card {
+                transform: translateY(40px) scale(1.2);
+            }
+
+            .final-text {
+                font-size: 48px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div>
-        <h1>你被骗了 😂</h1>
+    <div class="noise"></div>
+
+    <div class="card">
+        <h1>
+            <span id="typeText"></span><span class="cursor"></span>
+        </h1>
+
         <p>
-            哈哈哈哈哈哈哈哈 臭小丑<br />
-            你活着干啥啊 傻孩子。
+            🤣🤣🤣🤣🤣🤣🤣🤣🤣<br />
+            🤡🤡🤡🤡🤡🤡🤡🤡🤡🤡🤡🤡
         </p>
 
-        <button class="btn" onclick="playMusic()">
+        <button id="playBtn" class="btn" onclick="playMusic()">
             Play Music
         </button>
 
+        <div class="terminal" id="terminal"></div>
+
         <div class="small">
-            （Click here to see the porn）
+            正在窃取你的信息中哦🤏🏿
         </div>
+    </div>
+
+    <!-- 最终全屏层 -->
+    <div class="final-screen" id="finalScreen">
+        <div class="final-text" id="finalText"></div>
     </div>
 
     <audio id="bgm" src="music.mp3"></audio>
 
     <script>
-        // 尝试自动播放（很多浏览器会阻止）
+        const audio = document.getElementById("bgm");
+        const playBtn = document.getElementById("playBtn");
+        const typeText = document.getElementById("typeText");
+        const terminal = document.getElementById("terminal");
+
+        const finalScreen = document.getElementById("finalScreen");
+        const finalText = document.getElementById("finalText");
+
+        // 打字机内容
+        const text = "你被骗了 😂";
+        let i = 0;
+
+        function typeWriter() {
+            if (i <= text.length) {
+                typeText.textContent = text.slice(0, i);
+                i++;
+                setTimeout(typeWriter, 90);
+            }
+        }
+
+        function setPlayingUI() {
+            playBtn.textContent = "Playing…";
+            playBtn.classList.add("playing");
+            playBtn.onclick = null;
+        }
+
+        // 终端刷日志（纯演示）
+        const logs = [
+            "[SYSTEM] 获取IP地址...",
+            "[CHECK]  获取身份信息...",
+            "[SCAN]   查验中...",
+            "[SCAN]   开始获取...",
+            "[INFO]   获取信息... 0%",
+            "[INFO]   获取信息... 27%",
+            "[INFO]   获取信息... 64%",
+            "[INFO]   获取信息... 89%",
+            "[INFO]   获取信息... 100%",
+            " 祝你早日重开 小糖人 😂"
+        ];
+
+        let logIndex = 0;
+
+        function pushLog() {
+            if (logIndex < logs.length) {
+
+                const isLast = (logIndex === logs.length - 1);
+                const line = logs[logIndex];
+
+                // 最后一行加闪烁效果
+                if (isLast) {
+                    terminal.innerHTML += `<span class="flash-line">${line}</span><br/>`;
+                    finalText.textContent = line;
+                } else {
+                    terminal.innerHTML += line + "<br/>";
+                }
+
+                terminal.scrollTop = terminal.scrollHeight;
+
+                logIndex++;
+                setTimeout(pushLog, 450);
+
+            } else {
+                // 日志刷完：最后一行先闪 1.2 秒，再全屏跳出
+                setTimeout(() => {
+                    finalScreen.classList.add("show");
+                }, 1200);
+            }
+        }
+
         window.addEventListener("load", () => {
-            const audio = document.getElementById("bgm");
-            audio.volume = 0.8;
-            audio.play().catch(() => {
-                // 自动播放失败没关系，用户点按钮就能播放
-            });
+            typeWriter();
+            pushLog();
+
+            // 尝试自动播放（可能会被拦）
+            audio.volume = 0.85;
+            audio.play().then(() => {
+                setPlayingUI();
+            }).catch(() => { });
         });
 
         function playMusic() {
-            const audio = document.getElementById("bgm");
-            audio.volume = 0.8;
-            audio.play();
+            audio.volume = 0.85;
+            audio.play().then(() => {
+                setPlayingUI();
+            }).catch(() => {
+                alert("妈都给你晃飞了 傻孩子");
+            });
         }
     </script>
 </body>
